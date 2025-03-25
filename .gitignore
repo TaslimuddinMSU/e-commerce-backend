@@ -1,0 +1,41 @@
+node_modules/
+.env
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore build and output directories
+dist/
+build/
+coverage/
+
+# Ignore OS-specific files
+Thumbs.db
+*.DS_Store
+
+# Ignore package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore dependency artifacts
+.npm/
+.pnpm/
+.yarn/
+
+# Ignore temporary files
+*.tmp
+*.cache
+
+# Ignore Docker files
+docker-compose.override.yml
