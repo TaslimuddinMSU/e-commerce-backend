@@ -8,17 +8,16 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-const userProfile = new mongoose.Schema({
-    address: { type: String },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Linking userProfile to User profile
-
+const userAddress = new mongoose.Schema({
+    email: { type: String, ref: 'User', required: true, unique: true },
+    address: [{ type: String }],
 }, { timestamps: true });
 
 
 
 const User = mongoose.model('User', userSchema);
-const UserProfile = mongoose.model('UserProfile', userProfile);
+const UserAddress = mongoose.model('UserAddress', userAddress);
 
 
-module.exports = { User, UserProfile };
+module.exports = { User, UserAddress };
 

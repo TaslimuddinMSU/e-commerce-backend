@@ -1,4 +1,4 @@
-const { User, UserProfile } = require('../modal/user');
+const { User, UserAddress } = require('../modal/user');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
@@ -54,9 +54,51 @@ const signIn = async (req, res) => {
     }
 }
 
-const updateProfile = async (req, res) => {
+
+// Add New Address
+const addAddress = async (req, res) => {
+    const { email, address } = req.body;
+
+    try {
+        if (!email || !address) {
+            return res.status(400).json({ message: 'Email and address are required' });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        let userAddress = await UserAddress.findOne({ email });
+
+        if (!userAddress) {
+            userAddress = new UserAddress({
+                email,
+                address: [address]
+            });
+
+        } else {
+
+            if (!Array.isArray(userAddress.address)) {
+                userAddress.address = [];
+            }
+            userAddress.address.push(address);
+        }
+
+        await userAddress.save();
+        return res.status(200).json({ message: 'Profile updated successfully', userAddress });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error", error: error.message });
+    }
 
 }
+
+// Update Profile
+const updateProfile = async (req, res) => {
+    return res.status(201).json({message: "Hello"})
+}
+
 
 const changePassword = async (req, res) => {
 
@@ -66,7 +108,7 @@ const changePassword = async (req, res) => {
     try {
         let user = await User.findOne({ email });
 
-        if (!user){
+        if (!user) {
             return res.status(400).json({ message: "Invalid Credential", error: "email is invalid" })
         }
 
@@ -78,21 +120,27 @@ const changePassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const updatePasswords = await User.findOneAndUpdate(
-           { email},
-            {$set: {password: hashedPassword}},
+            { email },
+            { $set: { password: hashedPassword } },
             { new: true }
         )
 
         console.log(updatePasswords);
         const token = await jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: "1h" })
-        return res.status(200).json({  message: "Password has been updated successfully", token })
-        
+        return res.status(200).json({ message: "Password has been updated successfully", token })
+
     } catch (error) {
         return res.status(500).json({ message: "Server Error", error: error.message });
-        
+
     }
 
 }
 
 
-module.exports = { signUp, signIn, updateProfile, changePassword }
+module.exports = {
+    signUp,
+    signIn,
+    updateProfile,
+    addAddress,
+    changePassword
+}
