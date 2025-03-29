@@ -1,33 +1,31 @@
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
-    categoryName: { type: String, required: true },
+    categoryId: { type: String, required: true, unique: true }, // Primary Key for Category
+    categoryName: { type: String, required: true, unique: true },
     image: {
-        data: Buffer, // Store image as binary data if uploaded from file
-        contentType: String, // Store the file type (e.g., image/png, image/jpeg)
-        url: String, // Store the image URL if hosted externally
+        data: Buffer, 
+        contentType: String, 
+        url: { type: String, required: true }
     },
 });
 
 const productSchema = new mongoose.Schema({
+    productId: { type: String, required: true, unique: true }, // Primary Key for Product
     name: { type: String, required: true },
     description: { type: String, required: true },
     image: {
-        data: Buffer, // Store image as binary data if uploaded from file
-        contentType: String, // Store the file type (e.g., image/png, image/jpeg)
-        url: String, // Store the image URL if hosted externally
+        data: Buffer,
+        contentType: String,
+        url: String,
     },
-    rating: { type: Number, required: true, min: 0, max: 5 },
-    reviews: { type: Number, required: true, min: 0 },
+    rating: { type: Number, min: 0, max: 5, default: 0 }, 
+    reviews: { type: Number, min: 0, default: 0 }, 
     originalPrice: { type: Number, required: true, min: 0 },
-    discountedPrice: { type: Number, min: 0 },
-    discount: { type: String },
+    discountedPrice: { type: Number, min: 0, default: 0 },
+    discount: { type: Number, min: 0, default: 0 },
     stock: { type: Number, min: 0, default: 0 },
-    category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
-    }, // Linking product to category
+    categoryId: { type: String, required: true, ref: 'Category' }, // Foreign Key referencing Category
 });
 
 const Category = mongoose.model('Category', categorySchema);

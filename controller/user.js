@@ -54,7 +54,6 @@ const signIn = async (req, res) => {
     }
 }
 
-
 // Add New Address
 const addAddress = async (req, res) => {
     const { email, address } = req.body;
@@ -98,7 +97,6 @@ const addAddress = async (req, res) => {
 const updateProfile = async (req, res) => {
     return res.status(201).json({message: "Hello"})
 }
-
 
 const changePassword = async (req, res) => {
 

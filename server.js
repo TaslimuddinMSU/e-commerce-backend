@@ -4,6 +4,7 @@ const cors = require('cors')
 const connectDB = require('./config/dbConnection');
 const userRouter = require('./routers/userRouter')
 const productRouter = require('./routers/productRouter');
+const categoryRouter = require('./routers/categoryRouter');
 
 // Dsatabase connections
 connectDB(); 
@@ -15,7 +16,8 @@ app.use(cors({
 }));
 
 app.use('/api/auth', userRouter);
-app.use('/api/product', productRouter);
+app.use('/api', productRouter);
+app.use('/api', categoryRouter);
 
 
 const port = 5000;
