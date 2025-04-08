@@ -6,6 +6,8 @@ const userRouter = require('./routers/userRouter')
 const productRouter = require('./routers/productRouter');
 const categoryRouter = require('./routers/categoryRouter');
 const userPost = require('./routers/userPost');
+const blogRouter = require('./routers/blogRouter');
+
 
 
 // Dsatabase connections
@@ -20,7 +22,9 @@ app.use(cors({
 app.use('/api/auth', userRouter);
 app.use('/api', productRouter);
 app.use('/api', categoryRouter);
-app.use('/api', userPost)
+app.use('/api', userPost);
+app.use('/api', blogRouter)
+
 
 
 const port = 5000;

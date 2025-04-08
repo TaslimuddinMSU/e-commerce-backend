@@ -5,8 +5,8 @@ const addCategory = async (req, res) => {
     const { categoryName, image } = req.body;
 
     try {
-        const categoryId = uuidv4();
 
+        const categoryId = uuidv4();
         const category = new Category({
             categoryId,
             categoryName: categoryName,
@@ -32,7 +32,6 @@ const getCategory = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({ message: "Server Error", error: error.message });
-
     }
 }
 
